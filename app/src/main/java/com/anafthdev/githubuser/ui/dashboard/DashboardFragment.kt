@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.anafthdev.githubuser.R
 import com.anafthdev.githubuser.databinding.FragmentDashboardBinding
 import com.anafthdev.githubuser.foundation.adapter.UserRecyclerViewAdapter
+import com.anafthdev.githubuser.ui.detail.DetailFragment
 import timber.log.Timber
 
 class DashboardFragment: Fragment() {
@@ -33,13 +37,20 @@ class DashboardFragment: Fragment() {
         viewModel.state.observe(viewLifecycleOwner) { state ->
             Timber.i("DashboardState updated: $state")
 
-            showLoading(state.isLoading)
+            updateUi(state)
             userRecyclerViewAdapter.submitList(state.users)
         }
     }
 
     private fun init() {
-        userRecyclerViewAdapter = UserRecyclerViewAdapter()
+        userRecyclerViewAdapter = UserRecyclerViewAdapter().apply {
+            setOnItemClickListener { user ->
+                binding.root.findNavController().navigate(
+                    R.id.action_dashboardFragment_to_detailFragment,
+                    bundleOf(DetailFragment.EXTRA_USERNAME to user.login)
+                )
+            }
+        }
 
         with(binding) {
             searchView.apply {
@@ -62,10 +73,10 @@ class DashboardFragment: Fragment() {
         }
     }
 
-    private fun showLoading(show: Boolean) {
+    private fun updateUi(state: DashboardState) {
         with(binding) {
-            recyclerViewUser.visibility = if (show) View.GONE else View.VISIBLE
-            circularProgressIndicator.visibility = if (show) View.VISIBLE else View.GONE
+            recyclerViewUser.visibility = if (state.isLoading) View.GONE else View.VISIBLE
+            circularProgressIndicator.visibility = if (state.isLoading) View.VISIBLE else View.GONE
         }
     }
 }

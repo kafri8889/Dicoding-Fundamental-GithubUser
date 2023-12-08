@@ -2,4 +2,14 @@
     <string name="app_name">Github User</string>
     <string name="search_user">Search user</string>
     <string name="username">Username</string>
+    <string name="Username">username</string>
+    <string name="bio">Bio</string>
+    <string name="name">Name</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vestibulum neque sapien, quis feugiat quam mollis eget. Nunc facilisis ultrices leo quis commodo. Aenean pellentesque ac arcu id ultricies. Nam sagittis vehicula blandit. Praesent in augue consectetur nulla lobortis tincidunt at at dui. Nulla a finibus massa, vel rhoncus sem. Vestibulum mi mauris, dapibus in facilisis sit amet, pretium a lacus. Quisque dictum vehicula ipsum, vitae pretium leo maximus nec. Sed luctus aliquam massa.</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="_0">0</string>
+    <string name="repositories">Repositories</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

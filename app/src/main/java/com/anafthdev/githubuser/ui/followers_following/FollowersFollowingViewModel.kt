@@ -1,4 +1,4 @@
-package com.anafthdev.githubuser.ui.detail
+package com.anafthdev.githubuser.ui.followers_following
 
 import com.anafthdev.githubuser.data.datasource.remote.ApiClient
 import com.anafthdev.githubuser.data.model.ErrorResponse
@@ -11,11 +11,16 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 
-class DetailViewModel(
+class FollowersFollowingViewModel(
     private val githubRepository: GithubRepository = GithubRepository.getInstance(ApiClient.githubApiService)
-): BaseViewModel<DetailState>(DetailState()) {
+): BaseViewModel<FollowersFollowingState>(FollowersFollowingState()) {
 
-    fun getDetail(username: String) {
+    /**
+     * @param type [FollowersFollowingFragment.EXTRA_TYPE]
+     */
+    fun getFollowersOrFollowing(username: String?, type: String?) {
+        if (username == null || type == null) return
+
         updateState {
             copy(
                 isLoading = true,
@@ -23,12 +28,16 @@ class DetailViewModel(
             )
         }
 
-        githubRepository.getDetail(username).enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
+        val request = if (type == FollowersFollowingFragment.TYPE_FOLLOWERS) {
+            githubRepository.getFollowers(username)
+        } else githubRepository.getFollowing(username)
+
+        request.enqueue(object : Callback<List<User>> {
+            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 updateState {
                     copy(
                         isLoading = false,
-                        user = response.body(),
+                        users = response.body() ?: emptyList(),
                         errorMsg = response.errorBody().let {
                             if (it != null) Gson().fromJson(it.charStream(), ErrorResponse::class.java).message
                             else ""
@@ -37,7 +46,7 @@ class DetailViewModel(
                 }
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<List<User>>, t: Throwable) {
                 Timber.e(t, t.message)
 
                 updateState {

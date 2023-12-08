@@ -14,10 +14,10 @@ data class User(
 	val followingUrl: String? = null,
 
 	@SerializedName("twitter_username")
-	val twitterUsername: Any? = null,
+	val twitterUsername: String? = null,
 
 	@SerializedName("bio")
-	val bio: Any? = null,
+	val bio: String? = null,
 
 	@SerializedName("created_at")
 	val createdAt: String? = null,
