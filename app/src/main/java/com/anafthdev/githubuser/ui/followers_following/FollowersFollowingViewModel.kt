@@ -23,6 +23,8 @@ class FollowersFollowingViewModel(
 
         updateState {
             copy(
+                username = username,
+                type = type,
                 isLoading = true,
                 errorMsg = "" // Reset pesan error
             )

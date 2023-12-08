@@ -92,8 +92,11 @@ class DashboardFragment: Fragment() {
 
     private fun updateUi(state: DashboardState) {
         with(binding) {
-            recyclerViewUser.visibility = if (state.isLoading) View.GONE else View.VISIBLE
+            recyclerViewUser.visibility = if (state.isLoading || state.errorMsg.isNotBlank()) View.GONE else View.VISIBLE
             circularProgressIndicator.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+
+            tvError.visibility = if (state.errorMsg.isNotBlank()) View.VISIBLE else View.GONE
+            tvError.text = state.errorMsg
         }
     }
 }
