@@ -1,8 +1,8 @@
-package com.anafthdev.githubuser.ui.detail
+package com.anafthdev.githubuser.ui.repositories
 
 import com.anafthdev.githubuser.data.datasource.remote.ApiClient
 import com.anafthdev.githubuser.data.model.ErrorResponse
-import com.anafthdev.githubuser.data.model.User
+import com.anafthdev.githubuser.data.model.Repo
 import com.anafthdev.githubuser.data.repository.GithubRepository
 import com.anafthdev.githubuser.foundation.base.BaseViewModel
 import com.google.gson.Gson
@@ -11,11 +11,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 
-class DetailViewModel(
+class RepositoriesViewModel(
     private val githubRepository: GithubRepository = GithubRepository.getInstance(ApiClient.githubApiService)
-): BaseViewModel<DetailState>(DetailState()) {
+): BaseViewModel<RepositoriesState>(RepositoriesState()) {
 
-    fun getDetail(username: String) {
+    fun getRepositories(username: String) {
         updateState {
             copy(
                 isLoading = true,
@@ -23,12 +23,12 @@ class DetailViewModel(
             )
         }
 
-        githubRepository.getDetail(username).enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
+        githubRepository.getRepo(username).enqueue(object : Callback<List<Repo>> {
+            override fun onResponse(call: Call<List<Repo>>, response: Response<List<Repo>>) {
                 updateState {
                     copy(
                         isLoading = false,
-                        user = response.body(),
+                        repositories = response.body() ?: emptyList(),
                         errorMsg = response.errorBody().let {
                             if (it != null) Gson().fromJson(it.charStream(), ErrorResponse::class.java).message
                             else ""
@@ -37,7 +37,7 @@ class DetailViewModel(
                 }
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<List<Repo>>, t: Throwable) {
                 Timber.e(t, t.message)
 
                 updateState {
@@ -49,5 +49,4 @@ class DetailViewModel(
             }
         })
     }
-
 }
