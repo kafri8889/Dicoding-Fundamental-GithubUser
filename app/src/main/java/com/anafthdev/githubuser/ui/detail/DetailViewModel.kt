@@ -16,6 +16,8 @@ class DetailViewModel(
 ): BaseViewModel<DetailState>(DetailState()) {
 
     fun getDetail(username: String) {
+        if (username == state.value?.user?.login) return
+
         updateState {
             copy(
                 isLoading = true,
