@@ -1,7 +1,6 @@
 package com.anafthdev.githubuser.data.datasource.remote
 
 import com.anafthdev.githubuser.data.Constant
-import com.anafthdev.githubuser.data.model.Repo
 import com.anafthdev.githubuser.data.model.SearchResponse
 import com.anafthdev.githubuser.data.model.User
 import retrofit2.Call
@@ -40,11 +39,5 @@ interface GithubApiService {
         @Path("username") username: String,
         @Header("Authorization") token: String = Constant.GITHUB_TOKEN
     ): Call<List<User>>
-
-    @GET("users/{username}/repos")
-    fun getRepo(
-        @Path("username") username: String,
-        @Header("Authorization") token: String = Constant.GITHUB_TOKEN
-    ): Call<List<Repo>>
 
 }

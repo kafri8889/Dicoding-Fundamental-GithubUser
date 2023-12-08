@@ -1,7 +1,6 @@
 package com.anafthdev.githubuser.data.repository
 
 import com.anafthdev.githubuser.data.datasource.remote.GithubApiService
-import com.anafthdev.githubuser.data.model.Repo
 import com.anafthdev.githubuser.data.model.SearchResponse
 import com.anafthdev.githubuser.data.model.User
 import retrofit2.Call
@@ -28,10 +27,6 @@ class GithubRepository(
 
     fun getFollowing(username: String): Call<List<User>> {
         return githubApiService.getFollowing(username)
-    }
-
-    fun getRepo(username: String): Call<List<Repo>> {
-        return githubApiService.getRepo(username)
     }
 
     // Repository tanpa dependency injection

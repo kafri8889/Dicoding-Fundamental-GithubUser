@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,14 +15,25 @@ import com.anafthdev.githubuser.R
 import com.anafthdev.githubuser.databinding.FragmentDashboardBinding
 import com.anafthdev.githubuser.foundation.adapter.UserRecyclerViewAdapter
 import com.anafthdev.githubuser.ui.detail.DetailFragment
+import com.google.android.material.search.SearchView
 import timber.log.Timber
 
 class DashboardFragment: Fragment() {
 
     private lateinit var userRecyclerViewAdapter: UserRecyclerViewAdapter
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
     private lateinit var binding: FragmentDashboardBinding
 
     private val viewModel: DashboardViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Ketika search view terbuka dan user menekan tombol back, tutup
+        onBackPressedCallback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            binding.searchView.hide()
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return FragmentDashboardBinding.inflate(inflater, container, false).let { mBinding ->
@@ -55,6 +68,10 @@ class DashboardFragment: Fragment() {
         with(binding) {
             searchView.apply {
                 setupWithSearchBar(searchBar)
+
+                addTransitionListener { _, _, newState ->
+                    onBackPressedCallback.isEnabled = newState == SearchView.TransitionState.SHOWN || newState ==SearchView.TransitionState.SHOWING
+                }
 
                 editText.setOnEditorActionListener { _, _, _ ->
                     searchBar.setText(searchView.text)
