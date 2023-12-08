@@ -30,7 +30,7 @@ class DashboardFragment: Fragment() {
         super.onCreate(savedInstanceState)
 
         // Ketika search view terbuka dan user menekan tombol back, tutup
-        onBackPressedCallback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        onBackPressedCallback = requireActivity().onBackPressedDispatcher.addCallback(this, false) {
             binding.searchView.hide()
         }
     }
