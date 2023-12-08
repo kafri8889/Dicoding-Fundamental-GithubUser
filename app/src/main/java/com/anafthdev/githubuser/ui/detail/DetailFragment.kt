@@ -59,14 +59,19 @@ class DetailFragment: Fragment() {
 
     private fun updateUI(state: DetailState) {
         with(binding) {
-            mainContent.visibility = if (state.isLoading) View.GONE else View.VISIBLE
+            mainContent.visibility = if (state.isLoading || state.errorMsg.isNotBlank()) View.GONE else View.VISIBLE
             circularProgressIndicator.visibility = if (state.isLoading) View.VISIBLE else View.GONE
 
+            tvBio.visibility = if (state.user?.bio.isNullOrBlank()) View.GONE else View.VISIBLE
             tvBio.text = state.user?.bio ?: ""
+
             tvName.text = state.user?.name ?: ""
             tvUsername.text = state.user?.login?.let { "@$it" } ?: ""
             tvFollowersCount.text = state.user?.followers?.toString() ?: "0"
             tvFollowingCount.text = state.user?.following?.toString() ?: "0"
+
+            tvError.visibility = if (state.errorMsg.isNotBlank()) View.VISIBLE else View.GONE
+            tvError.text = state.errorMsg
 
             Glide.with(requireContext())
                 .load(state.user?.avatarUrl)

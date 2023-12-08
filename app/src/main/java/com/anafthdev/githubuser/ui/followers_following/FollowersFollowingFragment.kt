@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.anafthdev.githubuser.R
 import com.anafthdev.githubuser.databinding.FragmentFollowersFollowingBinding
 import com.anafthdev.githubuser.foundation.adapter.UserRecyclerViewAdapter
 import timber.log.Timber
@@ -58,7 +59,17 @@ class FollowersFollowingFragment : Fragment() {
     private fun updateUi(state: FollowersFollowingState) {
         with(binding) {
             circularProgressIndicator.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-            userRecyclerView.visibility = if (state.isLoading) View.GONE else View.VISIBLE
+            userRecyclerView.visibility = if (state.isLoading || state.errorMsg.isNotBlank()) View.GONE else View.VISIBLE
+
+            tvError.visibility = if (state.errorMsg.isNotBlank()) View.VISIBLE else View.GONE
+            tvError.text = state.errorMsg
+
+            if (state.users.isEmpty() && !state.isLoading) {
+                tvError.visibility = View.VISIBLE
+                tvError.text = getString(
+                    if (state.type == TYPE_FOLLOWERS) R.string.no_followers else R.string.no_following
+                )
+            }
         }
     }
 

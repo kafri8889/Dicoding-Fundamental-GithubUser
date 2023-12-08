@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".ui.followers_following.FollowersFollowingFragment">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -11,6 +12,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:visibility="gone"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/error"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
         android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView

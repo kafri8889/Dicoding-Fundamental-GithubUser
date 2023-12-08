@@ -12,4 +12,7 @@
     <string name="repositories">Repositories</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error">Error</string>
+    <string name="no_followers">No followers</string>
+    <string name="no_following">No following</string>
 </resources>
