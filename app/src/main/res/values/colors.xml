@@ -1,4 +1,7 @@
 <resources>
+
+    <color name="ic_launcher_background">#ffdadb</color>
+
     <color name="seed">#500617</color>
     <color name="md_theme_light_primary">#9C404C</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>

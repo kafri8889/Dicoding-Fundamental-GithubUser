@@ -29,7 +29,7 @@ class DashboardFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Ketika search view terbuka dan user menekan tombol back, tutup
+        // Ketika search view terbuka dan user menekan tombol back, tutup search view
         onBackPressedCallback = requireActivity().onBackPressedDispatcher.addCallback(this, false) {
             binding.searchView.hide()
         }

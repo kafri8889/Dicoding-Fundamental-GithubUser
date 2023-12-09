@@ -57,7 +57,6 @@ class DashboardViewModel(
 
     fun search(query: String) {
         // Jika query kosong, load random user
-        // Jika tidak, maka akan mendapatkan error
         if (query.isBlank()) {
             loadUsers()
             return
