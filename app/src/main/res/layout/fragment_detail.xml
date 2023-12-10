@@ -54,16 +54,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/name"
-            android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            tools:text="@string/name"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@string/Username"
-            android:textAppearance="@style/TextAppearance.Material3.LabelSmall" />
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            tools:text="@string/Username"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvBio"
@@ -73,9 +73,9 @@
             android:layout_marginHorizontal="8dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="@string/lorem_ipsum"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            tools:text="@string/lorem_ipsum"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvProfile"

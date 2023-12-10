@@ -26,6 +26,9 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
+            buildConfigField("String", "API_BASE_URL", "\"https://api.github.com/\"")
+            buildConfigField("String", "GITHUB_TOKEN", "\"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\"")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -41,6 +44,9 @@ android {
         debug {
             isMinifyEnabled = false
             isDebuggable = true
+
+            buildConfigField("String", "API_BASE_URL", "\"https://api.github.com/\"")
+            buildConfigField("String", "GITHUB_TOKEN", "\"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\"")
 
             kotlinOptions {
                 freeCompilerArgs += listOf(
