@@ -20,7 +20,7 @@ object ApiClient {
         Interceptor { chain ->
             chain.proceed(
                 chain.request().newBuilder()
-                    .addHeader("Authorization", Constant.GITHUB_TOKEN)
+                    .addHeader("Authorization", "token ${Constant.GITHUB_TOKEN}")
                     .build()
             )
         }

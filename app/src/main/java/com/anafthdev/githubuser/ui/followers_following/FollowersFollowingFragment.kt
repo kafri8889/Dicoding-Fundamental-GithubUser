@@ -59,7 +59,8 @@ class FollowersFollowingFragment : Fragment() {
     private fun updateUi(state: FollowersFollowingState) {
         with(binding) {
             circularProgressIndicator.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-            userRecyclerView.visibility = if (state.isLoading || state.errorMsg.isNotBlank()) View.GONE else View.VISIBLE
+            userRecyclerView.visibility = if (state.isLoading || state.errorMsg.isNotBlank() || state.users.isEmpty()) View.INVISIBLE
+            else View.VISIBLE
 
             tvError.visibility = if (state.errorMsg.isNotBlank()) View.VISIBLE else View.GONE
             tvError.text = state.errorMsg
