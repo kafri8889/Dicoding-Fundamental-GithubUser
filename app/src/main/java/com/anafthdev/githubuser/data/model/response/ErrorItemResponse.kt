@@ -1,8 +1,8 @@
-package com.anafthdev.githubuser.data.model
+package com.anafthdev.githubuser.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ErrorItem(
+data class ErrorItemResponse(
 
     @SerializedName("code")
     val code: String,

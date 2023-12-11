@@ -1,4 +1,4 @@
-package com.anafthdev.githubuser.data.model
+package com.anafthdev.githubuser.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
@@ -11,5 +11,5 @@ data class ErrorResponse(
 	val documentationUrl: String,
 
 	@SerializedName("errors")
-	val errors: List<ErrorItem>? = null
+	val errors: List<ErrorItemResponse>? = null
 )

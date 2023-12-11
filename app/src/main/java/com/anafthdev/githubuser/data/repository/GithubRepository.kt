@@ -1,42 +1,31 @@
 package com.anafthdev.githubuser.data.repository
 
-import com.anafthdev.githubuser.data.datasource.remote.GithubApiService
-import com.anafthdev.githubuser.data.model.SearchResponse
-import com.anafthdev.githubuser.data.model.User
-import retrofit2.Call
+import com.anafthdev.githubuser.data.model.db.UserDb
+import com.anafthdev.githubuser.data.model.response.SearchResponse
+import com.anafthdev.githubuser.data.model.response.UserResponse
+import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
-class GithubRepository(
-    private val githubApiService: GithubApiService
-) {
+interface GithubRepository {
 
-    fun search(query: String): Call<SearchResponse> {
-        return githubApiService.search(query)
-    }
+    fun searchRemote(query: String): Response<SearchResponse>
 
-    fun getUsers(): Call<List<User>> {
-        return githubApiService.getUsers()
-    }
+    fun getUsersRemote(): Response<List<UserResponse>>
 
-    fun getDetail(username: String): Call<User> {
-        return githubApiService.getDetail(username)
-    }
+    fun getDetailRemote(username: String): Response<UserResponse>
 
-    fun getFollowers(username: String): Call<List<User>> {
-        return githubApiService.getFollowers(username)
-    }
+    fun getFollowersRemote(username: String): Response<List<UserResponse>>
 
-    fun getFollowing(username: String): Call<List<User>> {
-        return githubApiService.getFollowing(username)
-    }
+    fun getFollowingRemote(username: String): Response<List<UserResponse>>
 
-    // Repository tanpa dependency injection
-    companion object {
-        private var INSTANCE: GithubRepository? = null
 
-        fun getInstance(githubApiService: GithubApiService): GithubRepository {
-            return INSTANCE ?: synchronized(GithubRepository::class) {
-                GithubRepository(githubApiService)
-            }.also { INSTANCE = it }
-        }
-    }
+
+    fun getAllUserLocal(): Flow<List<UserDb>>
+
+    suspend fun updateLocal(vararg userDb: UserDb)
+
+    suspend fun deleteLocal(vararg userDb: UserDb)
+
+    suspend fun insertLocal(vararg userDb: UserDb)
+
 }

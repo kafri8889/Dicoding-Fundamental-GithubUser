@@ -3,10 +3,12 @@ buildscript {
     val nav_version by extra("2.7.5")
 
     dependencies {
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
         classpath("com.android.tools.build:gradle:8.2.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlin_version")
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.48")
+        classpath("com.squareup.wire:wire-gradle-plugin:4.4.3")
     }
 }
 
@@ -15,6 +17,7 @@ plugins {
     id("com.android.application") version "8.2.0" apply false
     id("com.android.library") version "8.2.0" apply false
     id("org.jetbrains.kotlin.android") version "1.9.20" apply false
+    id("com.google.devtools.ksp") version "1.9.20-1.0.13" apply false
 }
 
 tasks {

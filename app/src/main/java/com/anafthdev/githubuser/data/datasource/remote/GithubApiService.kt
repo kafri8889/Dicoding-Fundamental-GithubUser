@@ -1,8 +1,8 @@
 package com.anafthdev.githubuser.data.datasource.remote
 
-import com.anafthdev.githubuser.data.model.SearchResponse
-import com.anafthdev.githubuser.data.model.User
-import retrofit2.Call
+import com.anafthdev.githubuser.data.model.response.SearchResponse
+import com.anafthdev.githubuser.data.model.response.UserResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -12,24 +12,24 @@ interface GithubApiService {
     @GET("search/users")
     fun search(
         @Query("q") username: String
-    ): Call<SearchResponse>
+    ): Response<SearchResponse>
 
     @GET("users")
-    fun getUsers(): Call<List<User>>
+    fun getUsers(): Response<List<UserResponse>>
 
     @GET("users/{username}")
     fun getDetail(
         @Path("username") username: String
-    ): Call<User>
+    ): Response<UserResponse>
 
     @GET("users/{username}/followers")
     fun getFollowers(
         @Path("username") username: String
-    ): Call<List<User>>
+    ): Response<List<UserResponse>>
 
     @GET("users/{username}/following")
     fun getFollowing(
         @Path("username") username: String
-    ): Call<List<User>>
+    ): Response<List<UserResponse>>
 
 }

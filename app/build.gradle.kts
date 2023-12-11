@@ -1,10 +1,16 @@
+import com.google.devtools.ksp.gradle.KspTaskJvm
+
 plugins {
+    id("com.android.application")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("org.jetbrains.kotlin.android")
-    id("com.android.application")
+    id("androidx.navigation.safeargs")
+    id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
+    id("com.squareup.wire")
     id("kotlin-parcelize")
     id("kotlin-android")
-    id("androidx.navigation.safeargs")
+    id("kotlin-kapt")
 }
 
 android {
@@ -74,9 +80,28 @@ android {
     }
 }
 
+// Tambahkan ini untuk mengatasi bug wire dengan ksp
+androidComponents {
+    onVariants { variant ->
+        // https://github.com/square/wire/issues/2335
+        val buildType = variant.buildType.toString()
+        val flavor = variant.flavorName.toString()
+        tasks.withType<KspTaskJvm> {
+            if (name.contains(buildType, ignoreCase = true) && name.contains(flavor, ignoreCase = true)) {
+                dependsOn("generate${flavor.capitalize()}${buildType.capitalize()}Protos")
+            }
+        }
+    }
+}
+
+wire {
+    kotlin {
+        android = true
+    }
+}
+
 dependencies {
 
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     val lifecycle_version = "2.6.2"
     val nav_version = "2.7.5"
 
@@ -90,12 +115,34 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+
     // Material Design
     implementation("com.google.android.material:material:1.10.0")
 
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    // Datastore
+    implementation("androidx.datastore:datastore:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-core:1.0.0")
+
+    // Dependency Injection
+    implementation("com.google.dagger:hilt-android:2.48")
+    ksp("androidx.hilt:hilt-compiler:1.1.0")
+    ksp("com.google.dagger:hilt-compiler:2.48")
+    ksp("com.google.dagger:hilt-android-compiler:2.48")
+
+    // Work Manager
+    implementation("androidx.hilt:hilt-work:1.1.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     // Networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -114,6 +161,7 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.squareup.wire:wire-runtime:4.4.3")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

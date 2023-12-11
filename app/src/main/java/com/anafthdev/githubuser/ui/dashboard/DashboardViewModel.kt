@@ -1,23 +1,62 @@
 package com.anafthdev.githubuser.ui.dashboard
 
-import com.anafthdev.githubuser.data.datasource.remote.ApiClient
-import com.anafthdev.githubuser.data.model.ErrorResponse
-import com.anafthdev.githubuser.data.model.SearchResponse
-import com.anafthdev.githubuser.data.model.User
+import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import com.anafthdev.githubuser.data.model.response.SearchResponse
 import com.anafthdev.githubuser.data.repository.GithubRepository
 import com.anafthdev.githubuser.foundation.base.BaseViewModel
-import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import timber.log.Timber
+import com.anafthdev.githubuser.foundation.extension.toUser
+import com.anafthdev.githubuser.foundation.worker.SearchWorker
+import com.anafthdev.githubuser.foundation.worker.Workers
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
+import java.util.UUID
+import javax.inject.Inject
 
-class DashboardViewModel(
-    private val githubRepository: GithubRepository = GithubRepository.getInstance(ApiClient.githubApiService)
+@OptIn(ExperimentalCoroutinesApi::class)
+@HiltViewModel
+class DashboardViewModel @Inject constructor(
+    private val githubRepository: GithubRepository,
+    private val workManager: WorkManager
 ): BaseViewModel<DashboardState>(DashboardState()) {
+
+    private val currentSearchWorkerId = MutableStateFlow<UUID?>(null)
 
     init {
         loadUsers()
+
+        viewModelScope.launch {
+            currentSearchWorkerId.filterNotNull().flatMapLatest { id ->
+                workManager.getWorkInfoByIdFlow(id)
+            }.collectLatest { workInfo ->
+                updateState {
+                    when (workInfo.state) {
+                        WorkInfo.State.SUCCEEDED -> {
+                            val response = workInfo.outputData.keyValueMap[SearchWorker.EXTRA_OUTPUT] as SearchResponse
+
+                            copy(
+                                isLoading = false,
+                                errorMsg = "",
+                                users = response.users.map { it.toUser() }
+                            )
+                        }
+                        WorkInfo.State.FAILED -> {
+                            copy(
+                                isLoading = false,
+                                errorMsg = workInfo.outputData.getString(SearchWorker.EXTRA_ERROR_MESSAGE) ?: ""
+                            )
+                        }
+                        else -> this
+                    }
+                }
+            }
+        }
     }
 
     private fun loadUsers() {
@@ -27,35 +66,12 @@ class DashboardViewModel(
                 errorMsg = "" // Reset pesan error
             )
         }
-
-        githubRepository.getUsers().enqueue(object : Callback<List<User>> {
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                updateState {
-                    copy(
-                        isLoading = false,
-                        users = response.body() ?: emptyList(),
-                        errorMsg = response.errorBody().let {
-                            if (it != null) Gson().fromJson(it.charStream(), ErrorResponse::class.java).message
-                            else ""
-                        }
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                Timber.e(t, t.message)
-
-                updateState {
-                    copy(
-                        isLoading = false,
-                        errorMsg = t.message ?: ""
-                    )
-                }
-            }
-        })
     }
 
     fun search(query: String) {
+        // Cancel current search work jika ada, sebelum mencari dengan query baru
+        currentSearchWorkerId.value?.let(workManager::cancelWorkById)
+
         // Jika query kosong, load random user
         if (query.isBlank()) {
             loadUsers()
@@ -69,31 +85,13 @@ class DashboardViewModel(
             )
         }
 
-        githubRepository.search(query).enqueue(object : Callback<SearchResponse> {
-            override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
-                updateState {
-                    copy(
-                        isLoading = false,
-                        users = response.body()?.users ?: emptyList(),
-                        errorMsg = response.errorBody().let {
-                            if (it != null) Gson().fromJson(it.charStream(), ErrorResponse::class.java).message
-                            else ""
-                        }
-                    )
+        viewModelScope.launch {
+            workManager.enqueue(
+                Workers.searchWorker(query).also {
+                    currentSearchWorkerId.emit(it.id)
                 }
-            }
-
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                Timber.e(t, t.message)
-
-                updateState {
-                    copy(
-                        isLoading = false,
-                        errorMsg = t.message ?: ""
-                    )
-                }
-            }
-        })
+            )
+        }
     }
 
 }
