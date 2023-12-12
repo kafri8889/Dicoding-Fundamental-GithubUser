@@ -15,28 +15,32 @@ class GithubRepositoryImpl @Inject constructor(
     private val userDao: UserDao
 ): GithubRepository {
 
-    override fun searchRemote(query: String): Response<SearchResponse> {
+    override suspend fun searchRemote(query: String): Response<SearchResponse> {
         return githubApiService.search(query)
     }
 
-    override fun getUsersRemote(): Response<List<UserResponse>> {
+    override suspend fun getUsersRemote(): Response<List<UserResponse>> {
         return githubApiService.getUsers()
     }
 
-    override fun getDetailRemote(username: String): Response<UserResponse> {
+    override suspend fun getDetailRemote(username: String): Response<UserResponse> {
         return githubApiService.getDetail(username)
     }
 
-    override fun getFollowersRemote(username: String): Response<List<UserResponse>> {
+    override suspend fun getFollowersRemote(username: String): Response<List<UserResponse>> {
         return githubApiService.getFollowers(username)
     }
 
-    override fun getFollowingRemote(username: String): Response<List<UserResponse>> {
+    override suspend fun getFollowingRemote(username: String): Response<List<UserResponse>> {
         return githubApiService.getFollowing(username)
     }
 
     override fun getAllUserLocal(): Flow<List<UserDb>> {
         return userDao.getAll()
+    }
+
+    override fun getFavoriteUserLocal(): Flow<List<UserDb>> {
+        return userDao.getFavoriteUser()
     }
 
     override suspend fun updateLocal(vararg userDb: UserDb) {

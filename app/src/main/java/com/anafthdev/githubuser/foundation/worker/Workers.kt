@@ -8,8 +8,8 @@ import androidx.work.workDataOf
 
 object Workers {
 
-    fun searchWorker(query: String): OneTimeWorkRequest {
-        return OneTimeWorkRequestBuilder<SearchWorker>()
+    fun searchUserWorker(query: String): OneTimeWorkRequest {
+        return OneTimeWorkRequestBuilder<SearchUserWorker>()
             .setConstraints(
                 Constraints(
                     requiredNetworkType = NetworkType.CONNECTED
@@ -17,7 +17,17 @@ object Workers {
             )
             .setInputData(
                 workDataOf(
-                    SearchWorker.EXTRA_QUERY to query
+                    SearchUserWorker.EXTRA_QUERY to query
+                )
+            )
+            .build()
+    }
+
+    fun getRemoteUserWorker(): OneTimeWorkRequest {
+        return OneTimeWorkRequestBuilder<GetRemoteUsersWorker>()
+            .setConstraints(
+                Constraints(
+                    requiredNetworkType = NetworkType.CONNECTED
                 )
             )
             .build()

@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.anafthdev.githubuser.R
 import com.anafthdev.githubuser.databinding.FragmentFollowersFollowingBinding
 import com.anafthdev.githubuser.foundation.adapter.UserRecyclerViewAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class FollowersFollowingFragment : Fragment() {
 
     private lateinit var binding: FragmentFollowersFollowingBinding

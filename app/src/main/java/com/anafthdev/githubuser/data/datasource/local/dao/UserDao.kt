@@ -15,6 +15,9 @@ interface UserDao {
     @Query("select * from user")
     fun getAll(): Flow<List<UserDb>>
 
+    @Query("select * from user where isFavorite_user = 1")
+    fun getFavoriteUser(): Flow<List<UserDb>>
+
     @Update
     suspend fun update(vararg userDb: UserDb)
 

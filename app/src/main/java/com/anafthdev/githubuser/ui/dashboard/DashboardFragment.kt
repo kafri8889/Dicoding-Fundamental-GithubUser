@@ -16,8 +16,10 @@ import com.anafthdev.githubuser.databinding.FragmentDashboardBinding
 import com.anafthdev.githubuser.foundation.adapter.UserRecyclerViewAdapter
 import com.anafthdev.githubuser.ui.detail.DetailFragment
 import com.google.android.material.search.SearchView
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class DashboardFragment: Fragment() {
 
     private lateinit var userRecyclerViewAdapter: UserRecyclerViewAdapter

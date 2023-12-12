@@ -8,19 +8,21 @@ import retrofit2.Response
 
 interface GithubRepository {
 
-    fun searchRemote(query: String): Response<SearchResponse>
+    suspend fun searchRemote(query: String): Response<SearchResponse>
 
-    fun getUsersRemote(): Response<List<UserResponse>>
+    suspend fun getUsersRemote(): Response<List<UserResponse>>
 
-    fun getDetailRemote(username: String): Response<UserResponse>
+    suspend fun getDetailRemote(username: String): Response<UserResponse>
 
-    fun getFollowersRemote(username: String): Response<List<UserResponse>>
+    suspend fun getFollowersRemote(username: String): Response<List<UserResponse>>
 
-    fun getFollowingRemote(username: String): Response<List<UserResponse>>
+    suspend fun getFollowingRemote(username: String): Response<List<UserResponse>>
 
 
 
     fun getAllUserLocal(): Flow<List<UserDb>>
+
+    fun getFavoriteUserLocal(): Flow<List<UserDb>>
 
     suspend fun updateLocal(vararg userDb: UserDb)
 

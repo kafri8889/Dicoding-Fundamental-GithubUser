@@ -12,8 +12,10 @@ import com.anafthdev.githubuser.databinding.FragmentDetailBinding
 import com.anafthdev.githubuser.foundation.adapter.ProfilePagerAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class DetailFragment: Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
