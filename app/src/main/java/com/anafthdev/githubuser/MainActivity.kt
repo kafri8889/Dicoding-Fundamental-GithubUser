@@ -11,7 +11,7 @@ import com.anafthdev.githubuser.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -37,17 +37,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            closeDrawer()
+            binding.drawerLayout.close()
             true
         }
     }
 
     fun openDrawer() {
         binding.drawerLayout.open()
-    }
-
-    fun closeDrawer() {
-        binding.drawerLayout.close()
     }
 
 }
