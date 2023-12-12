@@ -15,4 +15,6 @@
     <string name="error">Error</string>
     <string name="no_followers">No followers</string>
     <string name="no_following">No following</string>
+    <string name="settings">Settings</string>
+    <string name="favorite">Favorite</string>
 </resources>

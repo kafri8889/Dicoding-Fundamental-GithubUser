@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.anafthdev.githubuser.MainActivity
 import com.anafthdev.githubuser.R
 import com.anafthdev.githubuser.databinding.FragmentDashboardBinding
 import com.anafthdev.githubuser.foundation.adapter.UserRecyclerViewAdapter
@@ -68,6 +69,10 @@ class DashboardFragment: Fragment() {
         }
 
         with(binding) {
+            searchBar.setNavigationOnClickListener {
+                (requireActivity() as MainActivity).openDrawer()
+            }
+
             searchView.apply {
                 setupWithSearchBar(searchBar)
 
