@@ -11,8 +11,6 @@ import com.anafthdev.githubuser.foundation.extension.toUserDb
 import com.google.gson.Gson
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import timber.log.Timber
-import java.net.SocketTimeoutException
 
 @HiltWorker
 class SearchUserWorker @AssistedInject constructor(
@@ -22,7 +20,7 @@ class SearchUserWorker @AssistedInject constructor(
 ): CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        return try {
+        return WorkerUtil.tryWork(EXTRA_ERROR_MESSAGE) {
             val response = githubRepository.searchRemote(inputData.getString(EXTRA_QUERY) ?: throw IllegalArgumentException("Null query"))
 
             if (response.isSuccessful) {
@@ -40,16 +38,6 @@ class SearchUserWorker @AssistedInject constructor(
                     )
                 )
             }
-        } catch (e: SocketTimeoutException) {
-            Timber.e(e, e.message)
-            Result.retry()
-        } catch (e: Exception) {
-            Timber.e(e, e.message)
-            Result.failure(
-                workDataOf(
-                    EXTRA_ERROR_MESSAGE to (e.message ?: "")
-                )
-            )
         }
     }
 

@@ -43,6 +43,10 @@ class GithubRepositoryImpl @Inject constructor(
         return userDao.getFavoriteUser()
     }
 
+    override fun getUserByUsername(username: String): Flow<UserDb?> {
+        return userDao.getUserByUsername(username)
+    }
+
     override suspend fun updateLocal(vararg userDb: UserDb) {
         userDao.update(*userDb)
     }

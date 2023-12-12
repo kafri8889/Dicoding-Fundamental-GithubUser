@@ -24,6 +24,8 @@ interface GithubRepository {
 
     fun getFavoriteUserLocal(): Flow<List<UserDb>>
 
+    fun getUserByUsername(username: String): Flow<UserDb?>
+
     suspend fun updateLocal(vararg userDb: UserDb)
 
     suspend fun deleteLocal(vararg userDb: UserDb)

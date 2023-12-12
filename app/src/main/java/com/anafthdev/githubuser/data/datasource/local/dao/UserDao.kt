@@ -18,6 +18,9 @@ interface UserDao {
     @Query("select * from user where isFavorite_user = 1")
     fun getFavoriteUser(): Flow<List<UserDb>>
 
+    @Query("select * from user where login_user like :username")
+    fun getUserByUsername(username: String): Flow<UserDb?>
+
     @Update
     suspend fun update(vararg userDb: UserDb)
 

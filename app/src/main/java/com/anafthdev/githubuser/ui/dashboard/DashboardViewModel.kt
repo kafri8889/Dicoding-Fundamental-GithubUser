@@ -106,8 +106,9 @@ class DashboardViewModel @Inject constructor(
     }
 
     fun search(query: String) {
-        // Cancel current search work jika ada, sebelum mencari dengan query baru
+        // Cancel current search work dan load user work jika ada, sebelum mencari dengan query baru
         currentSearchUserWorkerId.value?.let(workManager::cancelWorkById)
+        currentGetRemoteUserWorkerId.value?.let(workManager::cancelWorkById)
 
         viewModelScope.launch {
             currentQuery.emit(query)

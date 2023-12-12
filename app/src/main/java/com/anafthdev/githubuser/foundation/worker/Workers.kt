@@ -33,4 +33,19 @@ object Workers {
             .build()
     }
 
+    fun getUserDetailWorker(username: String): OneTimeWorkRequest {
+        return OneTimeWorkRequestBuilder<GetUserDetailWorker>()
+            .setConstraints(
+                Constraints(
+                    requiredNetworkType = NetworkType.CONNECTED
+                )
+            )
+            .setInputData(
+                workDataOf(
+                    GetUserDetailWorker.EXTRA_USERNAME to username
+                )
+            )
+            .build()
+    }
+
 }

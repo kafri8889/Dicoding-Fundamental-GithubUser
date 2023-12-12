@@ -13,7 +13,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
 @HiltWorker
-class GetRemoteUsersWorker @AssistedInject constructor(
+class GetUserDetailWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
     private val githubRepository: GithubRepository
@@ -21,10 +21,12 @@ class GetRemoteUsersWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return WorkerUtil.tryWork(EXTRA_ERROR_MESSAGE) {
-            val response = githubRepository.getUsersRemote()
+            val response = githubRepository.getDetailRemote(
+                inputData.getString(EXTRA_USERNAME) ?: throw IllegalStateException("Null username")
+            )
 
             if (response.isSuccessful) {
-                githubRepository.insertLocal(*response.body()!!.map { it.toUserDb() }.toTypedArray())
+                githubRepository.updateLocal(response.body()!!.toUserDb())
                 Result.success()
             } else {
                 val errMsg = response.errorBody().let {
@@ -43,5 +45,7 @@ class GetRemoteUsersWorker @AssistedInject constructor(
 
     companion object {
         const val EXTRA_ERROR_MESSAGE = "errMsg"
+        const val EXTRA_USERNAME = "username"
     }
+
 }
