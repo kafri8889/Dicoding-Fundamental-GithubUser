@@ -1,12 +1,9 @@
-import com.google.devtools.ksp.gradle.KspTaskJvm
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
     id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp")
     id("com.squareup.wire")
     id("kotlin-parcelize")
     id("kotlin-android")
@@ -80,20 +77,6 @@ android {
     }
 }
 
-// Tambahkan ini untuk mengatasi bug wire dengan ksp
-androidComponents {
-    onVariants { variant ->
-        // https://github.com/square/wire/issues/2335
-        val buildType = variant.buildType.toString()
-        val flavor = variant.flavorName.toString()
-        tasks.withType<KspTaskJvm> {
-            if (name.contains(buildType, ignoreCase = true) && name.contains(flavor, ignoreCase = true)) {
-                dependsOn("generate${flavor.capitalize()}${buildType.capitalize()}Protos")
-            }
-        }
-    }
-}
-
 wire {
     kotlin {
         android = true
@@ -131,9 +114,9 @@ dependencies {
 
     // Dependency Injection
     implementation("com.google.dagger:hilt-android:2.48")
-    ksp("androidx.hilt:hilt-compiler:1.1.0")
-    ksp("com.google.dagger:hilt-compiler:2.48")
-    ksp("com.google.dagger:hilt-android-compiler:2.48")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    kapt("com.google.dagger:hilt-compiler:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     // Work Manager
     implementation("androidx.hilt:hilt-work:1.1.0")

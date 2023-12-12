@@ -1,0 +1,9 @@
+syntax = "proto3";
+option java_package = "com.anafthdev.githubuser";
+option java_generate_equals_and_hash = true;
+option java_multiple_files = true;
+
+message ProtoUserPreference {
+  bool isDarkTheme = 1;
+  bool isDynamicColor = 2;
+}
