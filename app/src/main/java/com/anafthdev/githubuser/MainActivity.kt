@@ -6,6 +6,7 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.findNavController
 import com.anafthdev.githubuser.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.favorite_menu -> {
-
+                    binding.navHostFragment.findNavController().navigate(R.id.action_dashboardFragment_to_favoriteFragment)
                 }
                 R.id.settings_menu -> {
 

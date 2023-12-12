@@ -35,11 +35,7 @@ class DetailFragment: Fragment() {
 
         init()
 
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            Timber.i("DetailState updated: $state")
-
-            updateUI(state)
-        }
+        viewModel.state.observe(viewLifecycleOwner, ::updateUI)
     }
 
     private fun init() {
@@ -60,6 +56,8 @@ class DetailFragment: Fragment() {
     }
 
     private fun updateUI(state: DetailState) {
+        Timber.i("DetailState updated: $state")
+
         with(binding) {
             mainContent.visibility = if (state.isLoading || state.errorMsg.isNotBlank()) View.GONE else View.VISIBLE
             circularProgressIndicator.visibility = if (state.isLoading) View.VISIBLE else View.GONE

@@ -50,12 +50,7 @@ class DashboardFragment: Fragment() {
 
         init()
 
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            Timber.i("DashboardState updated: $state")
-
-            updateUi(state)
-            userRecyclerViewAdapter.submitList(state.users)
-        }
+        viewModel.state.observe(viewLifecycleOwner, ::updateUi)
     }
 
     private fun init() {
@@ -98,6 +93,10 @@ class DashboardFragment: Fragment() {
     }
 
     private fun updateUi(state: DashboardState) {
+        Timber.i("DashboardState updated: $state")
+
+        userRecyclerViewAdapter.submitList(state.users)
+
         with(binding) {
             recyclerViewUser.visibility = if (state.isLoading || state.errorMsg.isNotBlank()) View.GONE else View.VISIBLE
             circularProgressIndicator.visibility = if (state.isLoading) View.VISIBLE else View.GONE

@@ -34,12 +34,7 @@ class FollowersFollowingFragment : Fragment() {
 
         init()
 
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            Timber.i("FollowersFollowingState updated: $state")
-
-            updateUi(state)
-            userRecyclerViewAdapter.submitList(state.users)
-        }
+        viewModel.state.observe(viewLifecycleOwner, ::updateUi)
     }
 
     private fun init() {
@@ -59,6 +54,10 @@ class FollowersFollowingFragment : Fragment() {
     }
 
     private fun updateUi(state: FollowersFollowingState) {
+        Timber.i("FollowersFollowingState updated: $state")
+
+        userRecyclerViewAdapter.submitList(state.users)
+
         with(binding) {
             circularProgressIndicator.visibility = if (state.isLoading) View.VISIBLE else View.GONE
             userRecyclerView.visibility = if (state.isLoading || state.errorMsg.isNotBlank() || state.users.isEmpty()) View.INVISIBLE
