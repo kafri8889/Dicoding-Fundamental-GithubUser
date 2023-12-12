@@ -27,7 +27,7 @@ interface UserDao {
     @Delete
     suspend fun delete(vararg userDb: UserDb)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(vararg userDb: UserDb)
 
 }

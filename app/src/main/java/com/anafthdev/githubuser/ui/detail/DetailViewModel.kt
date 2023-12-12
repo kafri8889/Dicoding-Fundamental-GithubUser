@@ -6,6 +6,7 @@ import androidx.work.WorkManager
 import com.anafthdev.githubuser.data.repository.GithubRepository
 import com.anafthdev.githubuser.foundation.base.BaseViewModel
 import com.anafthdev.githubuser.foundation.extension.toUser
+import com.anafthdev.githubuser.foundation.extension.toUserDb
 import com.anafthdev.githubuser.foundation.worker.GetRemoteUsersWorker
 import com.anafthdev.githubuser.foundation.worker.Workers
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -77,6 +78,18 @@ class DetailViewModel @Inject constructor(
                     currentGetUserDetailWorkerId.emit(it.id)
                 }
             )
+        }
+    }
+
+    fun toggleFavorite() {
+        state.value?.user?.let { user ->
+            viewModelScope.launch {
+                githubRepository.updateLocal(
+                    user.copy(
+                        isFavorite = !user.isFavorite
+                    ).toUserDb()
+                )
+            }
         }
     }
 

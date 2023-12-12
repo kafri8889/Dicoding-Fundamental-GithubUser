@@ -153,7 +153,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
@@ -163,14 +163,31 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
             android:background="?attr/colorPrimary"
             app:tabTextColor="?attr/colorOnPrimary" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tabLayout"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
-    </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/favorite_button"
+            android:src="@drawable/ic_favorite_outlined"
+            tools:ignore="RelativeOverlap" />
+
+
+    </RelativeLayout>
 
 </LinearLayout>

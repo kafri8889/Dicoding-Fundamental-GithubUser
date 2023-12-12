@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.anafthdev.githubuser.R
 import com.anafthdev.githubuser.databinding.FragmentDetailBinding
 import com.anafthdev.githubuser.foundation.adapter.ProfilePagerAdapter
 import com.bumptech.glide.Glide
@@ -39,20 +40,22 @@ class DetailFragment: Fragment() {
     }
 
     private fun init() {
-        arguments?.getString(EXTRA_USERNAME)?.let { username ->
-            viewModel.getDetail(username)
+        with(binding) {
+            arguments?.getString(EXTRA_USERNAME)?.let { username ->
+                viewModel.getDetail(username)
 
-            profilePagerAdapter = ProfilePagerAdapter(username, requireActivity())
-
-            with(binding) {
+                profilePagerAdapter = ProfilePagerAdapter(username, requireActivity())
                 viewPager.adapter = profilePagerAdapter
 
                 TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
                     tab.text = requireContext().getText(profilePagerAdapter.getLabel(pos))
                 }.attach()
             }
-        }
 
+            fabFavorite.setOnClickListener {
+                viewModel.toggleFavorite()
+            }
+        }
     }
 
     private fun updateUI(state: DetailState) {
@@ -74,6 +77,11 @@ class DetailFragment: Fragment() {
 
             tvError.visibility = if (state.errorMsg.isNotBlank()) View.VISIBLE else View.GONE
             tvError.text = state.errorMsg
+
+            fabFavorite.setImageResource(
+                if (state.user?.isFavorite == true) R.drawable.ic_favorite_filled
+                else R.drawable.ic_favorite_outlined
+            )
 
             Glide.with(requireContext())
                 .load(state.user?.avatarUrl)

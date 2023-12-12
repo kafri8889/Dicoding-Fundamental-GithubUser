@@ -11,6 +11,7 @@ import com.anafthdev.githubuser.foundation.extension.toUserDb
 import com.google.gson.Gson
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.firstOrNull
 
 @HiltWorker
 class GetUserDetailWorker @AssistedInject constructor(
@@ -21,12 +22,18 @@ class GetUserDetailWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return WorkerUtil.tryWork(EXTRA_ERROR_MESSAGE) {
-            val response = githubRepository.getDetailRemote(
-                inputData.getString(EXTRA_USERNAME) ?: throw IllegalStateException("Null username")
-            )
+            val username = inputData.getString(EXTRA_USERNAME) ?: throw IllegalStateException("Null username")
+            val response = githubRepository.getDetailRemote(username)
 
             if (response.isSuccessful) {
-                githubRepository.updateLocal(response.body()!!.toUserDb())
+                githubRepository.getUserByUsername(username).firstOrNull()?.let {
+                    githubRepository.updateLocal(
+                        response.body()!!.toUserDb().copy(
+                            isFavorite = it.isFavorite
+                        )
+                    )
+                }
+
                 Result.success()
             } else {
                 val errMsg = response.errorBody().let {
