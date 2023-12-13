@@ -8,6 +8,5 @@ interface UserPreferenceRepository {
     val getUserPreference: Flow<UserPreference>
 
     suspend fun setIsDarkTheme(value: Boolean)
-    suspend fun setIsDynamicColor(value: Boolean)
 
 }

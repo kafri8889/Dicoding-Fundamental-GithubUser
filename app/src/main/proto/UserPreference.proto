@@ -5,5 +5,4 @@ option java_multiple_files = true;
 
 message ProtoUserPreference {
   bool isDarkTheme = 1;
-  bool isDynamicColor = 2;
 }

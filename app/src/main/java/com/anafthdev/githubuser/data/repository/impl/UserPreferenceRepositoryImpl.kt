@@ -25,14 +25,6 @@ class UserPreferenceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun setIsDynamicColor(value: Boolean) {
-        userPreferenceDatastore.updateData {
-            it.copy(
-                isDynamicColor = value
-            )
-        }
-    }
-
     companion object {
         val corruptionHandler = ReplaceFileCorruptionHandler(
             produceNewData = { ProtoUserPreference() }

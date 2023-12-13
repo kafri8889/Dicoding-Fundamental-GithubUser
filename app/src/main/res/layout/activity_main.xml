@@ -18,6 +18,7 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <com.google.android.material.navigation.NavigationView
+        style="@style/Widget.Material3.NavigationView"
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -5,7 +5,6 @@ import com.anafthdev.githubuser.data.model.UserPreference
 
 fun ProtoUserPreference.toUserPreference(): UserPreference {
     return UserPreference(
-        isDarkTheme = isDarkTheme,
-        isDynamicColor = isDynamicColor,
+        isDarkTheme = isDarkTheme
     )
 }

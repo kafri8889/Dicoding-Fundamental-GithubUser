@@ -19,4 +19,5 @@
     <string name="favorite">Favorite</string>
     <string name="there_are_no_favorite_users">There are no favorite users</string>
     <string name="favorite_button">favorite button</string>
+    <string name="dark_mode">Dark mode</string>
 </resources>
