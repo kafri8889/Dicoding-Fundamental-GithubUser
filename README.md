@@ -3,6 +3,18 @@ Submission dicoding Android developer fundamental
 
 Preview
 
+https://github.com/kafri8889/Dicoding-Fundamental-GithubUser/assets/54765121/f01854fe-f97b-4be8-9e41-1339e20d3349
 
-https://github.com/kafri8889/Dicoding-Fundamental-GithubUser/assets/54765121/bda06491-244e-4d46-8b78-ef693dab7b74
 
+## Libraries Used
+- Hilt
+- Dagger
+- Work
+- Retrofit
+- Room
+- Datastore
+- Lifecycle
+- Navigation
+- Mockito
+- Espresso
+- etc
