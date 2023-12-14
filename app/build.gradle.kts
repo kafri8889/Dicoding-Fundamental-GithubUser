@@ -24,6 +24,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -86,6 +90,7 @@ wire {
 dependencies {
 
     val lifecycle_version = "2.6.2"
+    val espresso_version = "3.5.1"
     val nav_version = "2.7.5"
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
@@ -98,6 +103,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
@@ -147,7 +153,28 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.squareup.wire:wire-runtime:4.4.3")
 
+    implementation("androidx.test.espresso:espresso-contrib:$espresso_version")
+    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
+    testImplementation("org.mockito:mockito-core:4.4.0")
+    testImplementation("org.mockito:mockito-inline:4.4.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    testImplementation("org.robolectric:robolectric:4.11.1")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("androidx.test:core:1.5.0")
+    testImplementation("com.jraska.livedata:testing-ktx:1.3.0")
     testImplementation("junit:junit:4.13.2")
+    androidTestUtil("androidx.test:orchestrator:1.4.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espresso_version")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:$espresso_version")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44.2")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44.2")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

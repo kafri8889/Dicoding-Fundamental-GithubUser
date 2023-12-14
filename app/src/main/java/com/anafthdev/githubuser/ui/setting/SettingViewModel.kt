@@ -27,12 +27,6 @@ class SettingViewModel @Inject constructor(
 
     fun setDarkTheme(isDarkTheme: Boolean) = viewModelScope.launch {
         userPreferenceRepository.setIsDarkTheme(isDarkTheme)
-
-        updateState {
-            copy(
-                isDarkTheme = isDarkTheme
-            )
-        }
     }
 
 }
