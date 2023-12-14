@@ -41,7 +41,7 @@ class FollowersFollowingViewModel @Inject constructor(
             try {
                 response = if (type == FollowersFollowingFragment.TYPE_FOLLOWERS) {
                     githubRepository.getFollowersRemote(username)
-                } else githubRepository.getFollowersRemote(username)
+                } else githubRepository.getFollowingRemote(username)
 
                 updateState {
                     copy(
